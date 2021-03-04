@@ -11,13 +11,13 @@ A guided tutorial for experimenting with Tanzu Spring Cloud Gateway on your lapt
 ## MacOS 
 
 * [docker desktop](https://www.docker.com/products/docker-desktop) with the 
-  built-in k8s [MacOS k8s instruction](https://docs.docker.com/docker-for-mac/kubernetes/) 
+  built-in k8s [MacOS k8s instructions](https://docs.docker.com/docker-for-mac/kubernetes/) 
 
 ## Windows 
 
 * Windows subsystem for Linux since there are bash scripts that need to be run 
 *  [docker desktop](https://www.docker.com/products/docker-desktop) with the
-   built-in k8s [Windows k8s instruction](https://docs.docker.com/docker-for-windows/kubernetes/)
+   built-in k8s [Windows k8s instructions](https://docs.docker.com/docker-for-windows/kubernetes/)
    
 ## Validate prerequisites
 
