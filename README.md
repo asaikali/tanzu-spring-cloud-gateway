@@ -195,18 +195,19 @@ springcloudgateways.tanzu.vmware.com              2021-03-04T05:47:20Z
 ## Define a gateway instance 
 
 1. Inspect the `demo/my-gateway.yml` file it contains the YAML shown below which defines 
-a spring cloud gateway instance. 
-
+a spring cloud gateway instance.
+   
 ```yaml
 apiVersion: "tanzu.vmware.com/v1"
 kind: SpringCloudGateway
 metadata:
   name: my-gateway
 ```
-1. Execute the command `kubectl apply -f demo/my-gateway.yml` which will submit a request to the cluster
+
+2. Execute the command `kubectl apply -f demo/my-gateway.yml` which will submit a request to the cluster
 to deploy an instance of spring cloud gateway. 
 
-1. execute the command `kubectl get all` you should see a pod of the spring cloud gateway running
+3. execute the command `kubectl get all` you should see a pod of the spring cloud gateway running
 or being launched in the cluster's default namespace as shown in the output below.
    
 ```text
@@ -222,7 +223,7 @@ NAME                          READY   AGE
 statefulset.apps/my-gateway   1/1     3m36s
 ```
 
-1. Inspect the file `demo/route-config.yml` it contains gateway configuration CRD that proxies requests
+4. Inspect the file `demo/route-config.yml` it contains gateway configuration CRD that proxies requests
 set the gateway to github. Notice that this route configuration is generic.  
 
 ```yaml
@@ -239,9 +240,9 @@ spec:
         - StripPrefix=1
 ```
 
-1. run the command `kubectl apply -f demo/route-config.yml` you 
+5. run the command `kubectl apply -f demo/route-config.yml` you 
 
-1. Inspect the file `demo/mapping.yml` notice that it points at the gateway instance we already deployed
+6. Inspect the file `demo/mapping.yml` notice that it points at the gateway instance we already deployed
 at the configuration defined in `route-config.yml`
 ```yaml
 apiVersion: "tanzu.vmware.com/v1"
@@ -255,10 +256,10 @@ spec:
     name: my-gateway-routes
 ```
 
-1. run the command `kubectl apply -f demo/mapping.yml` this will configure the already deployed 
+7. run the command `kubectl apply -f demo/mapping.yml` this will configure the already deployed 
    instance to pass proxy requests to github.com 
    
-1. We don't have a load balancer configured with our kind cluster, so we will use port forwarding to
+8. We don't have a load balancer configured with our kind cluster, so we will use port forwarding to
    test the gateway. run the command `kubectl port-forward service/my-gateway 8080:80` you will see 
    output like
 ```text
@@ -266,7 +267,7 @@ Forwarding from 127.0.0.1:8080 -> 8080
 Forwarding from [::1]:8080 -> 8080
 ```
 
-1. Using a browser go to `http://locahost:8080` you should see the github site. The request are 
+9. Using a browser go to `http://locahost:8080` you should see the github site. The request are 
    going to spring cloud gateway which is then sending them to github.com. Congrats you have 
    managed to deploy a spring cloud gateway instance using a CRD. There are many more things
    that you can do with spring cloud gateway that we will discuss in the rest of the workshop this is 
