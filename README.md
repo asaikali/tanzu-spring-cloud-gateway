@@ -95,7 +95,7 @@ scgw-worker          Ready    <none>                 34s   v1.20.2
 1. Download the [Spring Cloud Gateway for Kubernetes from Tanzu Net](https://network.pivotal.io/products/spring-cloud-gateway-for-kubernetes). This workshop
 is tested with version 1.0.0 so make sure to download 1.0.x release. 
 
-1. Extract the downloaded tar.gz file `tar zxf spring-cloud-gateway-k8s-1.0.0.tgz` you will find the files shown below.
+2. Extract the downloaded tar.gz file `tar zxf spring-cloud-gateway-k8s-1.0.0.tgz` you will find the files shown below.
 ```text
 .
 ├── helm
@@ -125,7 +125,7 @@ is tested with version 1.0.0 so make sure to download 1.0.x release.
 
 1. create a namespace to install spring cloud gateway into using the command `kubectl create namespace spring-cloud-gateway`
 
-1. We are using a private container registry, so we must create a kubernetes secret in the spring-cloud-gateway 
+2. We are using a private container registry, so we must create a kubernetes secret in the spring-cloud-gateway 
    namespace. Grab the password for the container registry from the workshop Slack channel then modify the command
    below with the password and execute it. 
 
@@ -135,8 +135,7 @@ kubectl create secret docker-registry spring-cloud-gateway-image-pull-secret -n 
 --docker-username=workshop \
 --docker-password=[replace with password from workshop]
 ```
-
-1. In the `helm` folder create a file called `scg-image-values.yaml` with the content below
+3. In the `helm` folder create a file called `scg-image-values.yaml` with the content below
 ```yaml
 gateway:
   image: "registry.harbor.demo.tanzufun.com/tanzu/gateway:1.0.0"
@@ -146,7 +145,7 @@ scg-operator:
 this file is normally generated when the `scripts/relocate-images.sh` is run but since we did not run the script we
 are creating so that the helm chart can install spring cloud gateway. 
 
-1. Execute `./scripts/install-spring-cloud-gateway.sh` you should see output similar to below 
+4. Execute `./scripts/install-spring-cloud-gateway.sh` you should see output similar to below 
 ```text
 Installing Spring Cloud Gateway...
 chart tarball: spring-cloud-gateway-1.0.0.tgz
@@ -164,7 +163,7 @@ Install the chart spring-cloud-gateway-crds before installing this chart
 Finished installing Spring Cloud Gateway
 ```
 
-1. execute the command  `kubectl get all -n spring-cloud-gateway` you should see a pod running the spring cloud gateway 
+5. execute the command  `kubectl get all -n spring-cloud-gateway` you should see a pod running the spring cloud gateway 
 operator as shown below. 
    
 ```text
@@ -181,7 +180,7 @@ NAME                                     DESIRED   CURRENT   READY   AGE
 replicaset.apps/scg-operator-679f77dbb   1         1         1       3m42s
 ```
 
-1. The spring cloud gateway operator installed three kubernetes custom resources definitions. Execute the command 
+6. The spring cloud gateway operator installed three kubernetes custom resources definitions. Execute the command 
    `kubectl get crds` and you will see all the created custom CRDs shown below. These CRDs will be used to configure 
    the gateway. 
    
