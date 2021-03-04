@@ -8,18 +8,18 @@ A guided tutorial for experimenting with Tanzu Spring Cloud Gateway on your lapt
 * [helm](https://helm.sh/docs/intro/install/#through-package-managers)
 * [Tanzu Network Account](https://network.pivotal.io/) so you can download Spring Cloud Gateway for Kuberentes 
 
-## MacOS 
+### MacOS 
 
 * [docker desktop](https://www.docker.com/products/docker-desktop) with the 
   built-in k8s [MacOS k8s instructions](https://docs.docker.com/docker-for-mac/kubernetes/) 
 
-## Windows 
+### Windows 
 
 * Windows subsystem for Linux since there are bash scripts that need to be run 
 *  [docker desktop](https://www.docker.com/products/docker-desktop) with the
    built-in k8s [Windows k8s instructions](https://docs.docker.com/docker-for-windows/kubernetes/)
    
-## Validate prerequisites
+### Validate prerequisites
 
 1. Validate your kubectl is pointing at the docker desktop built in k8s. execute `kubectl cluster-info` 
    you should see output similar to what is below 
