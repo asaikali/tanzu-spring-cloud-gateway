@@ -21,8 +21,8 @@ A guided tutorial for experimenting with Tanzu Spring Cloud Gateway on your lapt
    
 ## Validate prerequisites
 
-1. Validate your kubectl is pointing at the docker desktop built in k8s `kubectl cluster-info` you should see output
-similar to what is below 
+1. Validate your kubectl is pointing at the docker desktop built in k8s. execute `kubectl cluster-info` 
+   you should see output similar to what is below 
 
 ```text
 Kubernetes control plane is running at https://kubernetes.docker.internal:6443
