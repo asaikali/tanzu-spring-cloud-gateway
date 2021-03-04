@@ -96,7 +96,6 @@ scgw-worker          Ready    <none>                 34s   v1.20.2
 is tested with version 1.0.0 so make sure to download 1.0.x release. 
 
 1. Extract the downloaded tar.gz file `tar zxf spring-cloud-gateway-k8s-1.0.0.tgz` you will find the files shown below.
-
 ```text
 .
 ├── helm
@@ -110,17 +109,18 @@ is tested with version 1.0.0 so make sure to download 1.0.x release.
 
 3 directories, 5 files
 ```
-
-1. inspect the contents of the `images` folder. Notice it contains two container images packaged as `.tar` files. 
+3. Inspect the contents of the `images` folder. Notice it contains two container images packaged as `.tar` files. 
    the script located in `scripts/relocate-images.sh` is used to publish `gateway-1.0.0.tar` and 
    `scg-operator-1.0.0.tar` images into a private container registry accessible from the kubernetes cluster you 
    deploy the spring cloud gateway on. In this workshop we will provide you with a container registry that already has 
    the spring cloud gateway containers available.  
 
-1. inspect the `helm` chart folder and notice that it contains a gzipped helm chart. This will 
-   be used to install the spring cloud gateway operator. The script located in `scrpits/install-spring-cloud-gateway.sh` 
-   execute the helm cli to install the operator.
+4. Inspect the `helm` chart folder and notice that it contains a gzipped helm chart. This will 
+   be used to install the spring cloud gateway operator. 
    
+5. Inspect the `scripts` folder notice that it contains two shell scripts, one for publishing the private 
+   container images to a registry, and the second scripts runs a helm to install the operator. 
+
 ## Install Spring Cloud Gateway Operator
 
 1. create a namespace to install spring cloud gateway into using the command `kubectl create namespace spring-cloud-gateway`
@@ -164,7 +164,7 @@ Install the chart spring-cloud-gateway-crds before installing this chart
 Finished installing Spring Cloud Gateway
 ```
 
-1. execute the command  `kubectl get all -n spring-cloud-gateway` you should a pod running the spring cloud gateway 
+1. execute the command  `kubectl get all -n spring-cloud-gateway` you should see a pod running the spring cloud gateway 
 operator as shown below. 
    
 ```text
@@ -182,7 +182,7 @@ replicaset.apps/scg-operator-679f77dbb   1         1         1       3m42s
 ```
 
 1. The spring cloud gateway operator installed three kubernetes custom resources definitions. Execute the command 
-   `kubectl get crds` and you will see all the created custom crds shown below. These crds will be used to configure 
+   `kubectl get crds` and you will see all the created custom CRDs shown below. These CRDs will be used to configure 
    the gateway. 
    
 ```text
@@ -192,8 +192,86 @@ springcloudgatewayrouteconfigs.tanzu.vmware.com   2021-03-04T05:47:20Z
 springcloudgateways.tanzu.vmware.com              2021-03-04T05:47:20Z
 ```
 
-## Lets proxy github 
+## Define a gateway instance 
 
+1. Inspect the `demo/my-gateway.yml` file it contains the YAML shown below which defines 
+a spring cloud gateway instance. 
+
+```yaml
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGateway
+metadata:
+  name: my-gateway
+```
+1. Execute the command `kubectl apply -f demo/my-gateway.yml` which will submit a request to the cluster
+to deploy an instance of spring cloud gateway. 
+
+1. execute the command `kubectl get all` you should see a pod of the spring cloud gateway running
+or being launched in the cluster's default namespace as shown in the output below.
+   
+```text
+NAME               READY   STATUS    RESTARTS   AGE
+pod/my-gateway-0   1/1     Running   0          3m36s
+
+NAME                          TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+service/kubernetes            ClusterIP   10.96.0.1       <none>        443/TCP    3h12m
+service/my-gateway            ClusterIP   10.96.178.167   <none>        80/TCP     3m36s
+service/my-gateway-headless   ClusterIP   None            <none>        5701/TCP   3m36s
+
+NAME                          READY   AGE
+statefulset.apps/my-gateway   1/1     3m36s
+```
+
+1. Inspect the file `demo/route-config.yml` it contains gateway configuration CRD that proxies requests
+set the gateway to github. Notice that this route configuration is generic.  
+
+```yaml
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGatewayRouteConfig
+metadata:
+  name: my-gateway-routes
+spec:
+  routes:
+    - uri: https://github.com
+      predicates:
+        - Path=/**
+      filters:
+        - StripPrefix=1
+```
+
+1. run the command `kubectl apply -f demo/route-config.yml` you 
+
+1. Inspect the file `demo/mapping.yml` notice that it points at the gateway instance we already deployed
+at the configuration defined in `route-config.yml`
+```yaml
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGatewayMapping
+metadata:
+  name: test-gateway-mapping
+spec:
+  gatewayRef:
+    name: my-gateway
+  routeConfigRef:
+    name: my-gateway-routes
+```
+
+1. run the command `kubectl apply -f demo/mapping.yml` this will configure the already deployed 
+   instance to pass proxy requests to github.com 
+   
+1. We don't have a load balancer configured with our kind cluster, so we will use port forwarding to
+   test the gateway. run the command `kubectl port-forward service/my-gateway 8080:80` you will see 
+   output like
+```text
+Forwarding from 127.0.0.1:8080 -> 8080
+Forwarding from [::1]:8080 -> 8080
+```
+
+1. Using a browser go to `http://locahost:8080` you should see the github site. The request are 
+   going to spring cloud gateway which is then sending them to github.com. Congrats you have 
+   managed to deploy a spring cloud gateway instance using a CRD. There are many more things
+   that you can do with spring cloud gateway that we will discuss in the rest of the workshop this is 
+   just the start. 
+   
 ## Resources
 
 * [GA release blog post](https://tanzu.vmware.com/content/blog/vmware-spring-cloud-gateway-kubernetes-distributed-api-gateway-generally-available)

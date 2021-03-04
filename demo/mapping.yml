@@ -1,0 +1,9 @@
+apiVersion: "tanzu.vmware.com/v1"
+kind: SpringCloudGatewayMapping
+metadata:
+  name: test-gateway-mapping
+spec:
+  gatewayRef:
+    name: my-gateway
+  routeConfigRef:
+    name: my-gateway-routes
