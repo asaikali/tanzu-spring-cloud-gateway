@@ -278,14 +278,14 @@ Forwarding from [::1]:8080 -> 8080
 ## Deploy Animal Rescue Sample Application (Optional)
 
 The [animal rescue](https://github.com/spring-cloud-services-samples/animal-rescue/) sample 
-application demonstrate many of commonly used features of spring cloud gateway. To deploy 
+application demonstrate many  commonly used features of spring cloud gateway. To deploy 
 the application and use the login with Auth0 feature you will need a client secret provided
-by the workshop instructor. 
+by the workshop instructor, look for it in the workshop Slack channel. 
 
-1. edit the file `animal-rescue/overlays/sso-secret-for-gateway/secrets/test-sso-credentials.txt` 
-   set the clientSecret value to the one provided on the workshop slack 
+1. Edit the file `animal-rescue/overlays/sso-secret-for-gateway/secrets/test-sso-credentials.txt` 
+   set the `client-secret` value to the one provided on the workshop slack 
    
-2. deploy the app using the command `kustomize build ./animal-rescue/ | kubectl apply -f -`
+2. Deploy the app using the command `kustomize build ./animal-rescue/ | kubectl apply -f -`
 
 3. Check the animal rescue components that are deployed into the cluster using the command 
    `kubectl get all -n animal-rescue` you should see output similar to the one below.
@@ -324,7 +324,7 @@ statefulset.apps/gateway-demo   2/2     6m54s
 5. Notice that there are two pods one running the front end application and one running the 
    backend api.
    
-6. notice that the front end and backend services are ClusterIP, so they can be reached 
+6. Notice that the front end and backend services are ClusterIP, so they can be reached 
    inside the k8s cluster but not from outside. We are going to need to reach the gateway to 
    direct traffic to the frontend and backend.
    
