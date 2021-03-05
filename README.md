@@ -5,6 +5,7 @@ A guided tutorial for experimenting with Tanzu Spring Cloud Gateway on your lapt
 ## Prerequisites
 
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
+* [kustomize](https://kubectl.docs.kubernetes.io/installation/kustomize/) 
 * [helm](https://helm.sh/docs/intro/install/#through-package-managers)
 * [Tanzu Network Account](https://network.pivotal.io/) so you can download Spring Cloud Gateway for Kuberentes 
 
@@ -33,6 +34,7 @@ To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 
 2. check the version of helm you have installed using the command `helm version` this workshop has been tested with `version.BuildInfo{Version:"v3.5.0",GitCommit:"32c22239423b3b4ba6706d450bd044baffdcf9e6", GitTreeState:"dirty", GoVersion:"go1.15.6"}` earlier versions might not work.
 
+3. check the version of kustomize using the command `kustomize version` the workshop is tested with version 3.9.2
 
 ## Download Spring Cloud Gateway for Kubernetes 
 
