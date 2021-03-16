@@ -270,7 +270,7 @@ Forwarding from 127.0.0.1:8080 -> 8080
 Forwarding from [::1]:8080 -> 8080
 ```
 
-9. Using a browser go to `http://locahost:8080` you should see the github site. The request are 
+9. Using a browser go to `http://localhost:8080` you should see the github site. The request are 
    going to spring cloud gateway which is then sending them to github.com. Congrats you have 
    managed to deploy a spring cloud gateway instance using a CRD. There are many more things
    that you can do with spring cloud gateway that we will discuss in the rest of the workshop this is 
